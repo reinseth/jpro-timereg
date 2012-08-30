@@ -1,0 +1,10 @@
+.calendar-month td {
+    border: 1px solid #ccc;
+    padding: 1em;
+    text-align: center;
+}
+
+.calendar-month td.other-month {
+    background-color: #eee;
+    color: #999;
+}
