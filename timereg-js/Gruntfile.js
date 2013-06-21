@@ -1,7 +1,5 @@
 module.exports = function (grunt) {
 
-
-
     grunt.initConfig({
 
         connect: {
@@ -46,26 +44,15 @@ module.exports = function (grunt) {
             }
         },
 
-        compass: {
-            build: {
-                options: {
-                    sassDir: 'app/styles',
-                    cssDir: 'build/styles'
-                }
-            }
-        },
-
         copy: {
             build: {
                 files: [
-                    {expand: true, cwd: 'app', src: ['scripts/**/*.js'], dest: 'build'},
-                    {expand: true, cwd: 'app', src: ['**/*.html'], dest: 'build'},
-                    {expand: true, cwd: 'app', src: ['images/**/*'], dest: 'build'}
+                    {expand: true, cwd: 'app', src: ['**/*'], dest: 'build'}
                 ]
             },
             dist: {
                 files: [
-                    {expand: true, cwd: 'build', src: ['**/*'], dest: 'dist'},
+                    {expand: true, cwd: 'build', src: ['**/*'], dest: 'dist'}
                 ]
             }
         }
@@ -75,7 +62,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-livereload');
     grunt.loadNpmTasks('grunt-regarde');
     grunt.loadNpmTasks('grunt-open');
-    grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('watch', [
@@ -86,7 +72,6 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('dist', [
-        'compass:build',
         'copy:build',
         'copy:dist'
     ]);
