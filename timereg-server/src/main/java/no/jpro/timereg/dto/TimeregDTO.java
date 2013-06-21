@@ -1,14 +1,15 @@
 package no.jpro.timereg.dto;
 
 
-import org.joda.time.DateTime;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+
+import org.joda.time.DateTime;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,6 +19,33 @@ public class TimeregDTO {
     private DateTime dato;
     private BigDecimal timer;
     private String kommentar;
+    
+    
+    public BigDecimal getTimer() {
+		return timer;
+	}
+
+	public String getKommentar() {
+		return kommentar;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setDato(DateTime dato) {
+		this.dato = dato;
+	}
+
+	public void setTimer(BigDecimal timer) {
+		this.timer = timer;
+	}
+
+	public void setKommentar(String kommentar) {
+		this.kommentar = kommentar;
+	}
+
+	
 
     private TimeregDTO() {
     }
@@ -37,4 +65,8 @@ public class TimeregDTO {
     public String getTimestampAsString() {
         return (dato != null) ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dato) : null;
     }
+
+	public DateTime getDato() {
+		return dato;
+	}
 }

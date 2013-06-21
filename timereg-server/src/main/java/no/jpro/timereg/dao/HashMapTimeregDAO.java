@@ -1,13 +1,16 @@
 package no.jpro.timereg.dao;
 
 
-import com.google.common.collect.ImmutableMap;
-import no.jpro.timereg.dto.TimeregDTO;
-import org.joda.time.DateTime;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import no.jpro.timereg.dto.TimeregDTO;
+
+import org.joda.time.DateTime;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 public class HashMapTimeregDAO implements TimeregDAO {
 
@@ -26,18 +29,22 @@ public class HashMapTimeregDAO implements TimeregDAO {
     }
 
     @Override
-    public Collection<TimeregDTO> find(int aar, int mnd) {
-        return map.values();
-    }
+    public Collection<TimeregDTO> find(final Integer aar, final Integer mnd) {
+    	return Collections2.filter(map.values(), new Predicate<TimeregDTO>() {
 
-    private Map<Integer, TimeregDTO> testMap() {
-        TimeregDTO dto = new TimeregDTO(DateTime.now(), 8,"første ");
-        dto.id = 1;
-        return ImmutableMap.of(dto.id, dto);
+			@Override
+			public boolean apply(TimeregDTO dto) {
+				DateTime dato = dto.getDato();
+				boolean matchesAar = aar== null || dato.year().get()== aar;
+				boolean matchesMnd = mnd== null || dato.monthOfYear().get()==mnd;
+				return matchesAar && matchesMnd;
+			}
+		});
+    	
     }
 
     @Override
-    public int save(TimeregDTO timereg) {
+    public Integer save(TimeregDTO timereg) {
         if (timereg.id == null) {
             timereg.id = findId();
         }

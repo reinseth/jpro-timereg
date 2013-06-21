@@ -1,9 +1,8 @@
 package no.jpro.timereg.dto;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.joda.time.DateTime;
 
 
 public class DateAdapter extends XmlAdapter<String, DateTime> {
