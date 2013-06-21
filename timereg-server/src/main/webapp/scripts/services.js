@@ -76,9 +76,12 @@ angular.module("timeregServices", [/*"ngResource"*/])
             lagre: function (registrering, callback) {
                 if (registrering.erNy()) {
                     $http.post("/api/timeregistreringer/", registrering)
-                        .success(function (resultat) {
-                            registrering.id = resultat.id;
-                            applyCallback(callback, registrering);
+                        .success(function (resultat, status, headers) {
+                            $http.get(headers('Location')).success(function(oppdatertRegistrering) {
+                            	registrering.id = oppdatertRegistrering.id;
+                            	applyCallback(callback, registrering);
+                            });
+                            
                         });
                 } else {
                     $http.post("/api/timeregistrering/" + registrering.id, registrering)

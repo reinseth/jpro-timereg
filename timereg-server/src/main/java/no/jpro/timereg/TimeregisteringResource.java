@@ -6,6 +6,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.net.URI;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,5 +43,11 @@ public class TimeregisteringResource {
     	dao.save(saved);
         URI uri = uriInfo.getBaseUriBuilder().path(TimeregisteringResource.class).build(id);
         return Response.created(uri).build();
+    }
+    
+    @DELETE
+    public void delete(@PathParam("id") int id) {
+    	TimeregDTO dto = dao.getById(id);
+        dao.delete(dto);
     }
 }

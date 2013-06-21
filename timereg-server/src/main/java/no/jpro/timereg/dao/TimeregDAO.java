@@ -12,4 +12,6 @@ public interface TimeregDAO {
     TimeregDTO getById(Integer id);
 
 	Collection<TimeregDTO> find(Integer aar, Integer mnd);
+
+	void delete(TimeregDTO dto);
 }

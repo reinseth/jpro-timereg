@@ -59,4 +59,9 @@ public class HashMapTimeregDAO implements TimeregDAO {
     private Integer findId() {
         return counter++;
     }
+
+	@Override
+	public void delete(TimeregDTO dto) {
+		map.remove(dto.id);
+	}
 }
