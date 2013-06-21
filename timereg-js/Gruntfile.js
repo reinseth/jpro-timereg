@@ -42,7 +42,7 @@ module.exports = function (grunt) {
 
         open: {
             app: {
-                path: 'http://localhost:8000'
+                path: 'http://localhost:8000/index-mocked.html'
             }
         },
 
