@@ -43,4 +43,8 @@ public class TimeregistreringService {
         int index = registreringer.indexOf(eksisterende);
         registreringer.set(index, registrering);
     }
+
+    public void slett(long id) {
+        registreringer.remove(get(id));
+    }
 }

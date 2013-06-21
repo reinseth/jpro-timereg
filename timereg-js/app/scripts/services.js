@@ -1,25 +1,6 @@
 angular.module("timeregServices", [/*"ngResource"*/])
     .factory("Timeregistreringer", function (/*$resource*/$http) {
 
-//        function mapRad(rad) {
-//            rad.dato = new Date(rad.dato);
-//            return rad;
-//        }
-//
-//        function mapRader(rader) {
-//            return rader.map(mapRad);
-//        }
-//
-//        return $resource("/api/timeregistrering/{id}", {id: '@id'}, {
-//            "query": {
-//                method: "GET",
-//                transformResponse: function (data) {
-//                    return mapRader(angular.fromJson(data));
-//                },
-//                isArray: true
-//            }
-//        });
-
         function parseDate(date) {
             if (angular.isDate(date)) {
                 return date;
@@ -89,10 +70,10 @@ angular.module("timeregServices", [/*"ngResource"*/])
                 if (registrering.erNy()) {
                     $http.post("/api/timeregistreringer/", toJson(registrering))
                         .success(function (resultat, status, headers) {
-                            var location = headers("Location");
-                            var id = /\/(\d+)$/.exec(location)[1];
-                            registrering.id = id;
-                            applyCallback(callback, registrering);
+                            $http.get(headers("Location")).success(function (oppdatertRegistrering) {
+                                registrering.id = oppdatertRegistrering.id;
+                                applyCallback(callback, registrering);
+                            });
                         });
                 } else {
                     $http.post("/api/timeregistrering/" + registrering.id, toJson(registrering))
