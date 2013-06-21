@@ -27,6 +27,9 @@ angular.module("timeregServices", [/*"ngResource"*/])
             if (angular.isString(date)) {
                 return new Date(date);
             }
+            if (angular.isArray(date)) {
+                return new Date(date[0], date[1] - 1, date[2]);
+            }
             return null;
         }
 
@@ -56,6 +59,15 @@ angular.module("timeregServices", [/*"ngResource"*/])
             }
         };
 
+        function toJson(registrering) {
+            return {
+                id: registrering.id,
+                dato: [registrering.dato.getFullYear(), registrering.dato.getMonth() + 1, registrering.dato.getDate()],
+                kommentar: registrering.kommentar,
+                timer: registrering.timer
+            }
+        }
+
         return {
             lag: function (data) {
                 return new Timeregistrering(data || {});
@@ -75,13 +87,13 @@ angular.module("timeregServices", [/*"ngResource"*/])
 
             lagre: function (registrering, callback) {
                 if (registrering.erNy()) {
-                    $http.post("/api/timeregistreringer/", registrering)
+                    $http.post("/api/timeregistreringer/", toJson(registrering))
                         .success(function (resultat) {
                             registrering.id = resultat.id;
                             applyCallback(callback, registrering);
                         });
                 } else {
-                    $http.post("/api/timeregistrering/" + registrering.id, registrering)
+                    $http.post("/api/timeregistrering/" + registrering.id, toJson(registrering))
                         .success(function () {
                             applyCallback(callback, registrering);
                         });

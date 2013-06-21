@@ -1,22 +1,39 @@
 package no.jpro.timereg.backend.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import org.joda.time.LocalDate;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
-import java.util.List;
+import javax.ws.rs.core.Response;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Path("timeregistreringer")
 public class TimeregistreringerRestService {
+
+
+    private static AtomicLong idGenerator = new AtomicLong();
+    private static List<Timeregistrering> registreringer = new ArrayList<Timeregistrering>();
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Timeregistrering> alt() {
-        return Arrays.asList(new Timeregistrering());
+    public List<Timeregistrering> getRegistreringer(@QueryParam("aar") int aar, @QueryParam("maaned") int maaned) {
+        return registreringer;
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registrer(Timeregistrering registrering) {
+        registrering.id = idGenerator.incrementAndGet();
+        registreringer.add(registrering);
+        return Response.ok(registrering).build();
     }
 
     static class Timeregistrering {
-        public String id = "13";
-        public double timer = 7.5;
+        public Long id;
+        public Double timer;
+        public LocalDate dato;
+        public String kommentar;
     }
 }
