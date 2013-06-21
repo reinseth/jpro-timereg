@@ -18,8 +18,7 @@ public class Main {
         final Map<String, String> initParams = new HashMap<String, String>();
 
         initParams.put("com.sun.jersey.config.property.packages", 
-                "no.jpro");
-        initParams.put("com.sun.jersey.api.json.POJOMappingFeature","true");
+                "no.jpro.timereg");
 
         System.out.println("Starting grizzly...");
         SelectorThread threadSelector = GrizzlyWebContainerFactory.create(BASE_URI, initParams);     

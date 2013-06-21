@@ -1,0 +1,56 @@
+<div id="month">
+    <header>
+        <div class="heading">
+            <h1>{{tittel}}</h1>
+            <button ng-click="forrigeMaaned()">&lt;</button>
+            <button ng-click="nesteMaaned()">&gt;</button>
+            <p class="text-small">Sum: {{sum()}}</p>
+        </div>
+        <form name="form" novalidate>
+            <label>
+                <span class="label">Dato</span>
+                <input name="dato" type="number" ng-model="skjemaData.dato" ng-disabled="skjemaData.id"
+                       required min="1" max="{{antallDagerIMaaned()}}" autofocus/>
+            </label>
+
+            <label>
+                <span class="label">Timer</span>
+                <input name="timer" type="number" ng-model="skjemaData.timer"
+                       required min="0" step="0.5"/>
+            </label>
+
+            <label>
+                <span class="label">Kommentar</span>
+                <input name="kommentar" type="text" ng-model="skjemaData.kommentar"/>
+            </label>
+
+            <input type="submit" value="{{skjemaData.id ? 'Oppdater' : 'Legg til'}}" ng-click="submit()"/>
+            <input type="button" value="Slett" ng-click="slett()" ng-show="skjemaData.id"/>
+
+            <p class="flash" ng-show="flash">{{flash}}</p>
+        </form>
+    </header>
+
+    <div class="content">
+        <table ng-show="registreringer.length">
+            <tr>
+                <th><input type="checkbox"/></th>
+                <th>Dag</th>
+                <th>Dato</th>
+                <th>Timer</th>
+                <th>Kommentarer</th>
+            </tr>
+            <tr ng-repeat="r in registreringer | orderBy:'dato'" ng-click="velgRegistrering(r, $event)" ng-class="{selected: skjemaData.id == r.id}">
+                <td><input type="checkbox" ng-checked="skjemaData.id == r.id" ng-click="velgRegistrering(r, $event)"/></td>
+                <td>{{r.dato | dag}}</td>
+                <td>{{r.dato | date:'dd/MM'}}</td>
+                <td>{{r.timer | number}}</td>
+                <td>{{r.kommentar}}</td>
+            </tr>
+        </table>
+
+        <div class="no-entries" ng-hide="registreringer.length">
+            Ingen registrerte timer.
+        </div>
+    </div>
+</div>
