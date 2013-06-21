@@ -1,39 +1,35 @@
 package no.jpro.timereg.backend.rest;
 
-import org.joda.time.LocalDate;
+import no.jpro.timereg.backend.domain.Timeregistrering;
+import no.jpro.timereg.backend.service.TimeregistreringService;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import javax.ws.rs.core.*;
+import java.net.URI;
+import java.util.List;
 
 @Path("timeregistreringer")
 public class TimeregistreringerRestService {
 
-
-    private static AtomicLong idGenerator = new AtomicLong();
-    private static List<Timeregistrering> registreringer = new ArrayList<Timeregistrering>();
+    @Context
+    private UriInfo uriInfo;
+    private TimeregistreringService service = new TimeregistreringService();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Timeregistrering> getRegistreringer(@QueryParam("aar") int aar, @QueryParam("maaned") int maaned) {
-        return registreringer;
+    public List<Timeregistrering> getRegistreringer(@QueryParam("aar") final int aar, @QueryParam("maaned") final int maaned) {
+        return service.finn(aar, maaned);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response registrer(Timeregistrering registrering) {
-        registrering.id = idGenerator.incrementAndGet();
-        registreringer.add(registrering);
-        return Response.ok(registrering).build();
+        return Response.created(uri(service.lagre(registrering))).build();
     }
 
-    static class Timeregistrering {
-        public Long id;
-        public Double timer;
-        public LocalDate dato;
-        public String kommentar;
+    private URI uri(long id) {
+        return uriInfo.getBaseUriBuilder().path(TimeregistreringRestService.class).build(id);
     }
+
 }

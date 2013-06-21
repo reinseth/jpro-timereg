@@ -88,8 +88,10 @@ angular.module("timeregServices", [/*"ngResource"*/])
             lagre: function (registrering, callback) {
                 if (registrering.erNy()) {
                     $http.post("/api/timeregistreringer/", toJson(registrering))
-                        .success(function (resultat) {
-                            registrering.id = resultat.id;
+                        .success(function (resultat, status, headers) {
+                            var location = headers("Location");
+                            var id = /\/(\d+)$/.exec(location)[1];
+                            registrering.id = id;
                             applyCallback(callback, registrering);
                         });
                 } else {
